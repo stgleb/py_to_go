@@ -5,6 +5,11 @@
 /* Start of preamble from import "C" comments.  */
 
 
+#line 3 "/home/stgleb/workspace/py_to_go/go_to_py/main.go"
+
+ #define Py_LIMITED_API
+ #include <Python.h>
+
 
 
 /* End of preamble from import "C" comments.  */
@@ -54,7 +59,7 @@ extern "C" {
 
 extern GoInt Sum(GoInt p0, GoInt p1);
 
-extern GoInt Run(char* p0, int p1, int p2, int p3, int p4);
+extern PyObject* Run(char* p0, int p1, int p2, int p3, int p4, PyCFunction* p5, PyCFunction* p6, PyCFunction* p7);
 
 #ifdef __cplusplus
 }

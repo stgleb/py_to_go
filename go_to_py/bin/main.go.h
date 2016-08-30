@@ -59,6 +59,8 @@ extern "C" {
 
 extern GoInt Sum(GoInt p0, GoInt p1);
 
+// NOTE: Calling C function pointers is currently not supported
+
 extern PyObject* Run(char* p0, int p1, int p2, int p3, int p4, PyCFunction* p5, PyCFunction* p6, PyCFunction* p7);
 
 #ifdef __cplusplus

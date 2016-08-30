@@ -20,6 +20,7 @@ func Sum(a, b int) int {
 	return a + b
 }
 
+// NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/
 //export Run
 func Run(h *C.char, port, threadCount, msize, listenQueue C.int,
 	 readyToConnect *C.PyCFunction, beforeTest *C.PyCFunction,

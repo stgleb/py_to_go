@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # print(add_go(1, 2))
 
     def ready_to_connect():
-        pass
+        print("Hello")
 
     times = []
 

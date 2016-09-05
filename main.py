@@ -1,5 +1,4 @@
 import ctypes
-import os
 
 TIME_CB = ctypes.CFUNCTYPE(None)
 
@@ -25,6 +24,16 @@ def add_c(a, b):
     return func(a, b)
 
 
+def add_c_with_callback(a, b):
+    def add(x, y):
+        return x + y
+
+    binary = ctypes.cdll.LoadLibrary("bin/main.c.so")
+    func = getattr(binary, "add")
+
+    return func(add, (a, b))
+
+
 def add_go(a, b):
     binary = ctypes.cdll.LoadLibrary("bin/main.go.so")
     func = getattr(binary, "Sum")
@@ -35,7 +44,7 @@ def add_go(a, b):
         ctypes.c_int,
     ]
 
-    return func(1, 2)
+    return func(a, b)
 
 
 def run_test_go(fname, params, ready_to_connect, before_test, after_test):
@@ -64,18 +73,19 @@ def run_test_go(fname, params, ready_to_connect, before_test, after_test):
 
 
 if __name__ == "__main__":
-    # print(add_c(1, 2))
+    print(add_c(1, 2))
+    print(add_c_with_callback(3, 4))
     # print(add_go(1, 2))
 
-    def ready_to_connect():
-        print("Hello")
-
-    times = []
-
-    def stamp():
-        times.append(os.times())
-
-    run_test_go("Run", "",
-                ready_to_connect,
-                stamp,
-                stamp)
+    # def ready_to_connect():
+    #     print("Hello")
+    #
+    # times = []
+    #
+    # def stamp():
+    #     times.append(os.times())
+    #
+    # run_test_go("Run", "",
+    #             ready_to_connect,
+    #             stamp,
+    #             stamp)

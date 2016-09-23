@@ -90,8 +90,42 @@ def run_callback():
 
     func(CALLBACK(callback))
 
+
+def run_test():
+    binary = ctypes.cdll.LoadLibrary("bin/main.go.so")
+    func = getattr(binary, "RunTest")
+    func.restype = ctypes.c_int
+    times = []
+
+    def stamp():
+        times.append(os.times())
+
+    def ready_func():
+        print("Ready")
+
+    CALLBACK = ctypes.CFUNCTYPE(None)
+    func.restype = ctypes.c_int
+    func.argtypes = [ctypes.POINTER(ctypes.c_char),  # local ip
+                     ctypes.c_int,                   # local port
+                     ctypes.c_int,                   # params.count
+                     ctypes.c_int,                   # msize
+                     ctypes.c_int,                   # listen value
+                     CALLBACK,
+                     CALLBACK,
+                     CALLBACK]
+
+    func("127.0.0.1".encode(),
+         8000,
+         1000,
+         65535,
+         1000,
+         CALLBACK(ready_func),
+         CALLBACK(stamp),
+         CALLBACK(stamp))
+
+
 if __name__ == "__main__":
-    run_callback()
+    run_test()
     # print(add_c(1, 2))
     # print(add_c_with_callback(3, 4))
     # print(add_go(1, 2))

@@ -5,7 +5,7 @@
 /* Start of preamble from import "C" comments.  */
 
 
-#line 3 "/home/gstepanov/workspace/py_to_go/main.go"
+#line 3 "/home/stgleb/workspace/py_to_go/main.go"
 
  #define Py_LIMITED_API
  #include <Python.h>
@@ -14,6 +14,21 @@ static inline void CallMyFunction(void* f) {
     void (*func)() = f;
     func();
     printf("Hello, world %p!!!\n", f);
+}
+ extern void BeforeTest();
+static inline void before_test(void* f) {
+    void (*func)() = f;
+    func();
+}
+ extern void AfterTest();
+static inline void after_test(void* f) {
+    void (*func)() = f;
+    func();
+}
+ extern void ReadyConn();
+static inline void ready_conn(void* f) {
+    void (*func)() = f;
+    func();
 }
 
 
@@ -70,6 +85,8 @@ extern void Foo(void* p0);
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/
 
 extern PyObject* Run(char* p0, int p1, int p2, int p3, int p4, PyObject* p5, PyObject* p6, PyObject* p7);
+
+extern GoInt RunTest(char* p0, GoInt p1, GoInt p2, GoInt p3, GoInt p4, void* p5, void* p6, void* p7);
 
 #ifdef __cplusplus
 }

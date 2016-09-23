@@ -9,6 +9,21 @@ package main
 //    func();
 //    printf("Hello, world %p!!!\n", f);
 //}
+// extern void BeforeTest();
+//static inline void before_test(void* f) {
+//    void (*func)() = f;
+//    func();
+//}
+// extern void AfterTest();
+//static inline void after_test(void* f) {
+//    void (*func)() = f;
+//    func();
+//}
+// extern void ReadyConn();
+//static inline void ready_conn(void* f) {
+//    void (*func)() = f;
+//    func();
+//}
 import "C"
 import (
 	"fmt"
@@ -33,6 +48,21 @@ func Sum(a, b int) int {
 //export Foo
 func Foo(f unsafe.Pointer) {
 	C.CallMyFunction(f)
+}
+
+func beforeTest(f unsafe.Pointer) {
+	fmt.Printf("Before test hook")
+	C.before_test(f)
+}
+
+func afterTest(f unsafe.Pointer) {
+	fmt.Printf("After test hook")
+	C.before_test(f)
+}
+
+func ready(f unsafe.Pointer) {
+	fmt.Printf("Connections are ready")
+	C.ready_conn(f)
 }
 
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/
@@ -60,6 +90,20 @@ func Run(h *C.char, port, threadCount, msize, listenQueue C.int,
 	}
 
 	return C.PyLong_FromLongLong(0)
+}
+
+//export RunTest
+func RunTest(h *C.char, port, threadCount, msize, listenQueue int,
+	readyConn, before, after unsafe.Pointer) int {
+	localAddr := C.GoString(h)
+	fmt.Printf("Start Test")
+	fmt.Printf("LocalAddr: %s LocalPort: %d ThreadCount: %d Msize: %d ListenQueue: %d",
+		localAddr, port, threadCount, msize, listenQueue)
+	beforeTest(before)
+	afterTest(after)
+	ready(readyConn)
+
+	return 0
 }
 
 func main() {

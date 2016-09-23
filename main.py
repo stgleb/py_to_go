@@ -1,4 +1,5 @@
 import ctypes
+import os
 
 TIME_CB = ctypes.CFUNCTYPE(None)
 
@@ -76,9 +77,11 @@ def run_callback():
     binary = ctypes.cdll.LoadLibrary("bin/main.go.so")
     func = getattr(binary, "Foo")
     func.restype = ctypes.c_int
+    times = []
 
     def callback():
-        print("Callback is called")
+        print("Hello, from callback")
+        times.append(os.times())
 
     CALLBACK = ctypes.CFUNCTYPE(None)
     func.argtypes = [

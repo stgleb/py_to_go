@@ -80,11 +80,12 @@ def run_callback():
     def callback():
         print("Callback is called")
 
+    CALLBACK = ctypes.CFUNCTYPE(None)
     func.argtypes = [
-        ctypes.CFUNCTYPE(callback)
+        CALLBACK
     ]
 
-    func()
+    func(CALLBACK(callback))
 
 if __name__ == "__main__":
     run_callback()

@@ -10,8 +10,10 @@
  #define Py_LIMITED_API
  #include <Python.h>
  extern void Foo();
-static inline void CallMyFunction() {
-    Foo();
+static inline void CallMyFunction(void* f) {
+    void (*func)() = f;
+    func();
+    printf("Hello, world %p!!!\n", f);
 }
 
 
@@ -63,7 +65,7 @@ extern "C" {
 
 extern GoInt Sum(GoInt p0, GoInt p1);
 
-extern void Foo();
+extern void Foo(void* p0);
 
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/
 

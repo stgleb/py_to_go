@@ -4,11 +4,16 @@ package main
 // #define Py_LIMITED_API
 // #include <Python.h>
 // extern void Foo();
-//static inline void CallMyFunction() {
-//    Foo();
+//static inline void CallMyFunction(void* f) {
+//    void (*func)() = f;
+//    func();
+//    printf("Hello, world %p!!!\n", f);
 //}
 import "C"
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 //import "unsafe"
 
 
@@ -26,7 +31,8 @@ func Sum(a, b int) int {
 }
 
 //export Foo
-func Foo() {
+func Foo(f unsafe.Pointer) {
+	C.CallMyFunction(f)
 }
 
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/

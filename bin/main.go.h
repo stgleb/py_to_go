@@ -5,10 +5,14 @@
 /* Start of preamble from import "C" comments.  */
 
 
-#line 3 "/home/stgleb/workspace/py_to_go/go_to_py/main.go"
+#line 3 "/home/gstepanov/workspace/py_to_go/main.go"
 
  #define Py_LIMITED_API
  #include <Python.h>
+ extern void Foo();
+static inline void CallMyFunction() {
+    Foo();
+}
 
 
 
@@ -58,6 +62,8 @@ extern "C" {
 
 
 extern GoInt Sum(GoInt p0, GoInt p1);
+
+extern void Foo();
 
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/
 

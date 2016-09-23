@@ -72,9 +72,24 @@ def run_test_go(fname, params, ready_to_connect, before_test, after_test):
          TIME_CB(after_test))
 
 
+def run_callback():
+    binary = ctypes.cdll.LoadLibrary("bin/main.go.so")
+    func = getattr(binary, "Foo")
+    func.restype = ctypes.c_int
+
+    def callback():
+        print("Callback is called")
+
+    func.argtypes = [
+        ctypes.CFUNCTYPE(callback)
+    ]
+
+    func()
+
 if __name__ == "__main__":
-    print(add_c(1, 2))
-    print(add_c_with_callback(3, 4))
+    run_callback()
+    # print(add_c(1, 2))
+    # print(add_c_with_callback(3, 4))
     # print(add_go(1, 2))
 
     # def ready_to_connect():

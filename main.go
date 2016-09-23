@@ -3,8 +3,13 @@ package main
 // #cgo pkg-config: python3
 // #define Py_LIMITED_API
 // #include <Python.h>
+// extern void Foo();
+//static inline void CallMyFunction() {
+//    Foo();
+//}
 import "C"
 import "fmt"
+//import "unsafe"
 
 
 /* Super strange thing, when import is make like
@@ -18,6 +23,10 @@ import "fmt"
 //export Sum
 func Sum(a, b int) int {
 	return a + b
+}
+
+//export Foo
+func Foo() {
 }
 
 // NOTE: Calling C function pointers is currently not supported https://golang.org/cmd/cgo/

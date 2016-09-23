@@ -9,23 +9,23 @@
 
  #define Py_LIMITED_API
  #include <Python.h>
- extern void Foo();
+extern void Foo();
 static inline void CallMyFunction(void* f) {
     void (*func)() = f;
     func();
     printf("Hello, world %p!!!\n", f);
 }
- extern void BeforeTest();
+extern void BeforeTest();
 static inline void before_test(void* f) {
     void (*func)() = f;
     func();
 }
- extern void AfterTest();
+extern void AfterTest();
 static inline void after_test(void* f) {
     void (*func)() = f;
     func();
 }
- extern void ReadyConn();
+extern void ReadyConn();
 static inline void ready_conn(void* f) {
     void (*func)() = f;
     func();

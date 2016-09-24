@@ -1,32 +1,20 @@
-#include <python2.7/Python.h>
+#include <python3.5/Python.h>
 
 extern "C"
-PyObject *add(PyObject *add_callback, PyObject *args) {
+PyObject *add(PyObject *add_callback) {
     int ok;
-    int i, j;
     PyObject *result;
-    PyObject *arg_list;
+    PyObject *arg_list = NULL;
+    printf("Start function add\n");
 
-    // Check arg tuple
-    if (!PyTuple_Check(args) || PyTuple_Size(args) < 2) {
-        fprintf(stderr, "invalid input parameter\n");
-        Py_RETURN_NONE;
-    }
-    // Parse arguments
-    ok = PyArg_ParseTuple(args, "ii", &i, &j);
-
-    if(!ok) {
-        fprintf(stderr, "error while parsing args\n");
-        Py_RETURN_NONE;
-    }
-    // build args tuple
-    arg_list = Py_BuildValue("(ii)", i, j);
-
+    arg_list = Py_BuildValue("()", NULL);
+    printf("Build arg tuple %p\n", arg_list);
     // Check if add_callback is callable
-    if(PyCallable_Check(add_callback) == 0) {
+    if(PyCallable_Check(add_callback)) {
+        printf("callback object is callable\n");
 		result = PyObject_Call(add_callback, arg_list, NULL);
 	} else {
-		fprintf(stderr, "Object is not callable\n");
+		printf("Object is not callable\n");
 		Py_RETURN_NONE;
 	}
 

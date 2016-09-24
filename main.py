@@ -26,13 +26,18 @@ def add_c(a, b):
 
 
 def add_c_with_callback(a, b):
-    def add(x, y):
-        return x + y
+    def add():
+        print("Hello, from callback!!!")
 
     binary = ctypes.cdll.LoadLibrary("bin/main.c.so")
     func = getattr(binary, "add")
 
-    return func(add, (a, b))
+    CALLBACK = ctypes.CFUNCTYPE(None)
+    func.argtypes = [
+        CALLBACK
+    ]
+
+    return func(CALLBACK(add))
 
 
 def add_go(a, b):
@@ -125,7 +130,8 @@ def run_test():
 
 
 if __name__ == "__main__":
-    run_test()
+    print(add_c_with_callback(5, 6))
+    # run_test()
     # print(add_c(1, 2))
     # print(add_c_with_callback(3, 4))
     # print(add_go(1, 2))
